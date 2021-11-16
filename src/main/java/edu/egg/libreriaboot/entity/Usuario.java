@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.SQLDelete;
 import org.springframework.data.annotation.CreatedDate;
@@ -39,12 +41,15 @@ public class Usuario {
     @LastModifiedDate //permite que se modifique la fecha
     private LocalDateTime fechaModificacion;
     private Boolean alta;
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    private Rol rol;
 
     public Usuario() {
         alta = true;
     }
 
-    public Usuario(String id, String nombre, String apellido, String correo, String clave, LocalDateTime fechaCreacion, LocalDateTime fechaModificacion, Boolean alta) {
+    public Usuario(String id, String nombre, String apellido, String correo, String clave, LocalDateTime fechaCreacion, LocalDateTime fechaModificacion, Boolean alta, Rol rol) {
         this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -53,6 +58,7 @@ public class Usuario {
         this.fechaCreacion = fechaCreacion;
         this.fechaModificacion = fechaModificacion;
         this.alta = alta;
+        this.rol = rol;
     }
 
     public String getId() {
@@ -118,6 +124,13 @@ public class Usuario {
     public void setAlta(Boolean alta) {
         this.alta = alta;
     }
-    
+
+    public Rol getRol() {
+        return rol;
+    }
+
+    public void setRol(Rol rol) {
+        this.rol = rol;
+    }
     
 }

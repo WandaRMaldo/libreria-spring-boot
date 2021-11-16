@@ -1,7 +1,9 @@
 package edu.egg.libreriaboot.service;
 
+import edu.egg.libreriaboot.entity.Rol;
 import edu.egg.libreriaboot.entity.Usuario;
 import edu.egg.libreriaboot.excepcion.MiExcepcion;
+import edu.egg.libreriaboot.repository.RolRepository;
 import edu.egg.libreriaboot.repository.UsuarioRepository;
 import java.util.Collections;
 import java.util.List;
@@ -20,6 +22,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class UsuarioService implements UserDetailsService {
     @Autowired
     private UsuarioRepository usuarioRepository;
+    
+    @Autowired
+    private RolRepository rolRepository;
 
     @Autowired
     private BCryptPasswordEncoder encoder;
@@ -27,7 +32,7 @@ public class UsuarioService implements UserDetailsService {
     private final String MENSAJE_USERNAME = "No existe un usuario registrado con el correo %s";
 
     @Transactional
-    public void crear(String nombre, String apellido, String correo, String clave) throws MiExcepcion {
+    public void crear(String nombre, String apellido, String correo, String clave, Rol rol) throws MiExcepcion {
 
         if (usuarioRepository.existsByCorreo(correo)) {
             throw new MiExcepcion("Ya existe un usuario registrado con ese correo");
@@ -46,6 +51,15 @@ public class UsuarioService implements UserDetailsService {
         usuario.setCorreo(correo);
         usuario.setClave(encoder.encode(clave));
         usuario.setAlta(true);
+        usuario.setRol(rol);
+//        if (usuarioRepository.findAll().isEmpty()) {
+//            usuario.setRol(rolRepository.findById(1).orElse(null));
+//        } else if (rol == null) {
+//            usuario.setRol(rolRepository.findById(2).orElse(null));;
+//        } else {
+//            usuario.setRol(rol);
+//        }
+        
         usuarioRepository.save(usuario);
     }
 
@@ -75,11 +89,11 @@ public class UsuarioService implements UserDetailsService {
         Usuario usuario = usuarioRepository.findByCorreo(correo)
                 .orElseThrow(() -> new UsernameNotFoundException(String.format(MENSAJE_USERNAME, correo)));
 
-        //GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + usuario.getRol().getNombre());
+        GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + usuario.getRol().getNombre());
 
-        //OJO HAY QUE IMPORTAR EL CORE en user
-        //return new User(usuario.getCorreo(), usuario.getClave(), Collections.singletonList(authority));
-        return new User(usuario.getCorreo(), usuario.getClave(), Collections.emptyList());
+        
+        return new User(usuario.getCorreo(), usuario.getClave(), Collections.singletonList(authority));
+        //return new User(usuario.getCorreo(), usuario.getClave(), Collections.emptyList());
     }
 
 }

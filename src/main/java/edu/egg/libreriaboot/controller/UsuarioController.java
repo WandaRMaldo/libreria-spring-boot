@@ -5,12 +5,15 @@
  */
 package edu.egg.libreriaboot.controller;
 
+import edu.egg.libreriaboot.entity.Rol;
 import edu.egg.libreriaboot.entity.Usuario;
 import edu.egg.libreriaboot.excepcion.MiExcepcion;
+import edu.egg.libreriaboot.service.RolService;
 import edu.egg.libreriaboot.service.UsuarioService;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,7 +31,9 @@ public class UsuarioController {
 
     @Autowired
     private UsuarioService usuarioServicio;
-    //private RolServicio rolServicio;
+    
+    @Autowired
+    private RolService rolService;
 
 
     @GetMapping
@@ -47,21 +52,21 @@ public class UsuarioController {
     
 
     @GetMapping("/crear")
-    //@PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')") //verifica antes de ingresar a la ruta si cumple con el rol que le asigne
     public ModelAndView crear() {
         ModelAndView mav = new ModelAndView("usuario-formulario");
         mav.addObject("usuario", new Usuario());
         mav.addObject("title", "Crear Usuario");
         mav.addObject("action", "guardar");
-        //mav.addObject("roles", rolServicio.buscarTodos());
+        mav.addObject("roles", rolService.buscarTodos());
         return mav;
     }
 
     @PostMapping("/guardar")
-    //@PreAuthorize("hasRole('ADMIN')")
-    public RedirectView guardar(@RequestParam String nombre, @RequestParam String apellido, @RequestParam String correo, @RequestParam String clave, RedirectAttributes attributes) {
+    @PreAuthorize("hasRole('ADMIN')") // si tiene quiero mas de un rol utilizo "hasAnyRole('ROL1', 'ROL2')"
+    public RedirectView guardar(@RequestParam String nombre, @RequestParam String apellido, @RequestParam String correo, @RequestParam String clave, @RequestParam Rol rol, RedirectAttributes attributes) {
         try {
-            usuarioServicio.crear(nombre, apellido, correo, clave);
+            usuarioServicio.crear(nombre, apellido, correo, clave, rol);
             attributes.addFlashAttribute("exito", "El usuario ha sido creado exitosamente");
         } catch (MiExcepcion e) {
             attributes.addFlashAttribute("error", e.getMessage());

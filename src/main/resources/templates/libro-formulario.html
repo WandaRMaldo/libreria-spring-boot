@@ -26,7 +26,7 @@
         >
         <input th:field="*{id}" type="hidden" />
             <div class="form-floating mb-3 col-xl-6">
-                <input class="form-control" id="isbn" placeholder="Isbn" th:field="*{isbn}" required type="text" />
+                <input class="form-control" id="isbn" placeholder="Isbn" th:field="*{isbn}" th:readonly="${libro.isbn}" type="text" />
                 <label for="isbn">Isbn</label>
                 <div class="invalid-feedback">El isbn es obligatorio</div>
             </div>

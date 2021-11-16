@@ -20,11 +20,18 @@
 
             <div class="text-end">
                 <a class="btn btn-light me-1" th:href="@{/login}">Ingresar</a>
-                <a class="btn btn-warning" th:href="@{/signup}">Registrarse</a>
+                <!-- <a class="btn btn-warning" th:href="@{/signup}">Registrarse</a> -->
+                <a class="btn btn-warning" th:href="@{/usuarios/crear}">Registrarse</a>
             </div>
         </div>
     </nav>
 
+    <div th:if="${exito}" class="container mt-4 text-center">
+        <div class="row col-md-4 mx-auto">
+            <div th:text="${exito}" class="alert alert-danger m-0 shadow"></div>
+        </div>
+    </div>
+    
     <div th:if="${error}" class="container mt-4 text-center">
         <div class="row col-md-4 mx-auto">
             <div th:text="${error}" class="alert alert-danger m-0 shadow"></div>

@@ -29,24 +29,36 @@
                 <div class="form-floating mb-3 col-xl-6">
                     <input class="form-control" id="apellido" placeholder="Apellido" requiered
                         th:field="*{apellido}" type="text">
-                    <label for="nombre">Apellido</label>
+                    <label for="apellido">Apellido</label>
                     <div class="invalid-feedback">El apellido es obligatorio</div>
                 </div>
 
                 <div class="form-floating mb-3 col-xl-6">
                     <input class="form-control" id="correo" placeholder="Correo" requiered
                         th:field="*{correo}" type="text">
-                    <label for="nombre">Correo</label>
+                    <label for="correo">Correo</label>
                     <div class="invalid-feedback">El correo es obligatorio</div>
                 </div>
 
                 <div class="form-floating mb-3 col-xl-6">
                     <input class="form-control" id="clave" placeholder="Clave" requiered
                         th:field="*{clave}" type="password">
-                    <label for="nombre">Clave</label>
+                    <label for="clave">Clave</label>
                     <div class="invalid-feedback">La clave es obligatoria</div>
                 </div>
 
+                <!-- -->
+                 <div class="form-floating mb-3 col-xl-6">
+                    <select aria-label="Elegir rol" class="form-select" id="rol" th:field="*{rol}">
+                        <option selected value="">Elegir Rol</option>
+                        <option th:each="rol : ${roles}" th:text="|${rol.nombre}|"
+                                th:value="${rol.id}"></option>
+                    </select>
+                    <label for="rol">Rol</label>
+            </div>
+                
+                
+                
                 <div class="row">
                     <div class="col-xl-3">
                         <button class="btn btn-success"

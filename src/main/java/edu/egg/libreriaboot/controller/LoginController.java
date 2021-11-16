@@ -5,7 +5,9 @@
  */
 package edu.egg.libreriaboot.controller;
 
+import edu.egg.libreriaboot.entity.Rol;
 import edu.egg.libreriaboot.excepcion.MiExcepcion;
+import edu.egg.libreriaboot.service.RolService;
 import edu.egg.libreriaboot.service.UsuarioService;
 import java.security.Principal;
 import java.util.Map;
@@ -25,12 +27,16 @@ public class LoginController {
     
     @Autowired
     private UsuarioService usuarioService;
+    
+    @Autowired
+    private RolService rolService;
     //private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
     @GetMapping("/login")
     public ModelAndView login(@RequestParam(required = false) String error, @RequestParam(required = false) String logout, Principal principal) {
         ModelAndView mav = new ModelAndView("login");
 
+        
         if (error != null) {
             mav.addObject("error", "Correo o contraseña inválida");
         }
@@ -49,7 +55,7 @@ public class LoginController {
     
      @GetMapping("/signup")
     public ModelAndView signup(HttpServletRequest request, Principal principal) {
-        ModelAndView mav = new ModelAndView("signup");
+        ModelAndView mav = new ModelAndView("signup"); //seteamos un html
         Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
 
         if (flashMap != null) {
@@ -68,14 +74,14 @@ public class LoginController {
     }
 
     @PostMapping("/registro")
-    public RedirectView signup(@RequestParam String nombre, @RequestParam String apellido, @RequestParam String correo, @RequestParam String clave, RedirectAttributes attributes, HttpServletRequest request) {
-        RedirectView redirectView = new RedirectView("/login");
+    public RedirectView signup(@RequestParam String nombre, @RequestParam String apellido, @RequestParam String correo, @RequestParam String clave, @RequestParam Rol rol, RedirectAttributes attributes, HttpServletRequest request) {
+        RedirectView redirectView = new RedirectView("/login"); //redirije a rutas
 
         try {
-            usuarioService.crear(nombre, apellido, correo, clave);
+            usuarioService.crear(nombre, apellido, correo, clave, rol);
             attributes.addFlashAttribute("exito", "SE HA REGISTRADO CON ÉXITO.");
             //request.login(correo, clave);
-            //redirectView.setUrl("/index");
+            redirectView.setUrl("/index");
 
         } catch (Exception e) {
             attributes.addFlashAttribute("error", e.getMessage());
