@@ -63,6 +63,34 @@ public class UsuarioService implements UserDetailsService {
         usuarioRepository.save(usuario);
     }
 
+    @Transactional
+    public void crear(String nombre, String apellido, String correo, String clave) throws MiExcepcion {
+
+        if (usuarioRepository.existsByCorreo(correo)) {
+            throw new MiExcepcion("Ya existe un usuario registrado con ese correo");
+        }
+
+        if (correo == null || correo.trim().isEmpty()) {
+            throw new MiExcepcion("el correo es obligatorio");
+        }
+        if (clave == null || clave.trim().isEmpty()) {
+            throw new MiExcepcion("la clave es obligatorio");
+        }
+        
+        Usuario usuario = new Usuario();
+        usuario.setNombre(nombre.toUpperCase());
+        usuario.setApellido(apellido.toUpperCase());
+        usuario.setCorreo(correo);
+        usuario.setClave(encoder.encode(clave));
+        usuario.setAlta(true);
+        if (usuarioRepository.findAll().isEmpty()) {
+            usuario.setRol(rolRepository.findById(1).orElse(null));
+        } else {
+            usuario.setRol(rolRepository.findById(2).orElse(null));;
+        }
+        usuarioRepository.save(usuario);
+    }
+    
     @Transactional(readOnly = true)
     public List<Usuario> buscarTodos() {
         return usuarioRepository.findAll();

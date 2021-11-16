@@ -74,11 +74,11 @@ public class LoginController {
     }
 
     @PostMapping("/registro")
-    public RedirectView signup(@RequestParam String nombre, @RequestParam String apellido, @RequestParam String correo, @RequestParam String clave, @RequestParam Rol rol, RedirectAttributes attributes, HttpServletRequest request) {
+    public RedirectView signup(@RequestParam String nombre, @RequestParam String apellido, @RequestParam String correo, @RequestParam String clave, RedirectAttributes attributes, HttpServletRequest request) {
         RedirectView redirectView = new RedirectView("/login"); //redirije a rutas
 
         try {
-            usuarioService.crear(nombre, apellido, correo, clave, rol);
+            usuarioService.crear(nombre, apellido, correo, clave);
             attributes.addFlashAttribute("exito", "SE HA REGISTRADO CON ÉXITO.");
             //request.login(correo, clave);
             redirectView.setUrl("/index");
