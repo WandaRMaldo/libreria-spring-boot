@@ -61,8 +61,16 @@
             </ul>
         </div>
 
-        <div class="text-end">
-            <a class="btn btn-light" th:href="@{/logout}">Finalizar sesión</a>
+        <div class="text-end" sec:authorize="isAuthenticated()">
+                <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">                   
+                            <span sec:authentication="name"></span>                       
+                </a>
+                <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end" aria-labelledby="navbarScrollingDropdown">
+                    <li>
+                        <a class="dropdown-item" th:href="@{/logout}">Finalizar sesión</a>
+                    </li>
+
+                </ul>
         </div>
     </div>
 </nav>

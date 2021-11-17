@@ -52,17 +52,29 @@ public class UsuarioService implements UserDetailsService {
         usuario.setClave(encoder.encode(clave));
         usuario.setAlta(true);
         usuario.setRol(rol);
-//        if (usuarioRepository.findAll().isEmpty()) {
-//            usuario.setRol(rolRepository.findById(1).orElse(null));
-//        } else if (rol == null) {
-//            usuario.setRol(rolRepository.findById(2).orElse(null));;
-//        } else {
-//            usuario.setRol(rol);
-//        }
         
         usuarioRepository.save(usuario);
     }
 
+    @Transactional
+    public void modificar(String id, String nombre, String apellido, String correo, String clave, Rol rol) throws MiExcepcion {
+        if (correo == null || correo.trim().isEmpty()) {
+            throw new MiExcepcion("el correo es obligatorio");
+        }
+        if (clave == null || clave.trim().isEmpty()) {
+            throw new MiExcepcion("la clave es obligatorio");
+        }
+        Usuario usuario = usuarioRepository.findById(id).orElse(null);
+        usuario.setNombre(nombre.toUpperCase());
+        usuario.setApellido(apellido.toUpperCase());
+        usuario.setCorreo(correo);
+        usuario.setClave(encoder.encode(clave));
+        usuario.setAlta(true);
+        usuario.setRol(rol);
+        
+        usuarioRepository.save(usuario);
+    }
+    
     @Transactional
     public void crear(String nombre, String apellido, String correo, String clave) throws MiExcepcion {
 

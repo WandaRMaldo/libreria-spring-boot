@@ -1,12 +1,12 @@
-/* .card-img-top {
-    width: 100%;
-    height: 20vh;
-    object-fit: contain;
-} */
 
 body {
   /* Margin bottom by footer height */
   margin-bottom: 60px;
+
+}
+
+span {
+    color: rgba(255,255,255,.55);
 }
 
 .index-libro {
@@ -29,6 +29,15 @@ body {
 
 .index-editorial {
     background-image: url(../img/editorial.svg);
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 20vh;
+}
+
+.index-usuario {
+    background-image: url(../img/usuario.svg);
     background-position: center;
     background-size: contain;
     background-repeat: no-repeat;

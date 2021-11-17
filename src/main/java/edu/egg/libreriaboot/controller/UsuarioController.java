@@ -62,8 +62,19 @@ public class UsuarioController {
         return mav;
     }
 
+    @GetMapping("/editar/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ModelAndView editar(@PathVariable String id) {
+        ModelAndView mav = new ModelAndView("usuario-formulario");
+        mav.addObject("usuario", usuarioServicio.buscarPorId(id));
+        mav.addObject("title", "Editar Usuario");
+        mav.addObject("action", "modificar");
+        mav.addObject("roles", rolService.buscarTodos());
+        return mav;
+    }
+    
     @PostMapping("/guardar")
-    @PreAuthorize("hasRole('ADMIN')") // si tiene quiero mas de un rol utilizo "hasAnyRole('ROL1', 'ROL2')"
+    @PreAuthorize("hasRole('ADMIN')") // si quiero mas de un rol utilizo "hasAnyRole('ROL1', 'ROL2')"
     public RedirectView guardar(@RequestParam String nombre, @RequestParam String apellido, @RequestParam String correo, @RequestParam String clave, @RequestParam Rol rol, RedirectAttributes attributes) {
         try {
             usuarioServicio.crear(nombre, apellido, correo, clave, rol);
@@ -75,6 +86,18 @@ public class UsuarioController {
     }
 
 
+    @PostMapping("/modificar")
+    @PreAuthorize("hasRole('ADMIN')")
+    public RedirectView modificar(@RequestParam String id, @RequestParam String nombre, @RequestParam String apellido, @RequestParam String correo, @RequestParam String clave, @RequestParam Rol rol, RedirectAttributes attributes) {
+        try {
+            usuarioServicio.modificar(id, nombre, apellido, correo, clave, rol);
+            attributes.addFlashAttribute("exito", "El usuario ha sido modificado exitosamente");
+        } catch (MiExcepcion e) {
+            attributes.addFlashAttribute("error", e.getMessage());
+        }
+        return new RedirectView("/usuarios");
+    }
+    
     @PostMapping("/habilitar/{id}")
     public RedirectView habilitar(@PathVariable String id) {
         usuarioServicio.darDeAlta(id);

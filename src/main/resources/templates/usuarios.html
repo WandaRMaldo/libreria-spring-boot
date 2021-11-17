@@ -31,7 +31,8 @@
                         <th class="col-md-4 px-md-2 text-center" scope="col">Nombre</th>
                         <th class="col-md-2 px-md-1" scope="col">Creacion</th>
                         <th class="col-md-2 px-md-1" scope="col">Modificacion</th>
-                        <th class="col-md-1 px-md-1" scope="col">Estado</th>
+                        <th sec:authorize="hasRole('ADMIN')" class="col-md-1 px-md-1" scope="col">Estado</th>
+                        <th sec:authorize="hasRole('ADMIN')" class="col-md-1 px-md-1" scope="col">Estado</th>
                         <th sec:authorize="hasRole('ADMIN')" class="col-md-4 px-md-2" scope="col">Acciones</th>
                     </tr>
                 </thead>
@@ -40,13 +41,12 @@
                         <td class="col-md-4 px-md-2 text-center" scope="row" th:text="|${usuario.nombre} ${usuario.apellido}|"></td>
                         <td class="col-md-2 px-md-1 text-center " th:text="${#temporals.format(usuario.fechaCreacion,'dd-MM-yyyy HH:mm')}"></td>
                         <td class="col-md-2 px-md-1 text-center " th:text="${#temporals.format(usuario.fechaModificacion,'dd-MM-yyyy HH:mm')}"></td>
-                        <td class="col-md-1 px-md-1 text-center" th:text="${usuario.alta} ? 'Alta' : 'Baja'" ></td>
+                        <td sec:authorize="hasRole('ADMIN')" class="col-md-1 px-md-1 text-center" th:text="${usuario.alta} ? 'Alta' : 'Baja'" ></td>
+                        <td sec:authorize="hasRole('ADMIN')" class="col-md-1 px-md-1 text-center" th:text="${usuario.rol.nombre}"></td>
                         <td sec:authorize="hasRole('ADMIN')" class="col-md-4 px-md-2 d-flex justify-content-around w-100">
-                            <!--
                             <a class="btn btn-secondary btn-sm" th:href="@{/usuarios/editar/__${usuario.id}__}">
                                 Editar
                             </a>
-                            -->
                             
                             <form method="post" th:action="${usuario.alta} ? @{/usuarios/eliminar/__${usuario.id}__} : @{/usuarios/habilitar/__${usuario.id}__}">
                               <button class="btn btn-info btn-sm" type="submit" th:text="${usuario.alta} ? 'Eliminar' : 'Habilitar'">

@@ -5,6 +5,7 @@
  */
 package edu.egg.libreriaboot.repository;
 
+import edu.egg.libreriaboot.entity.Rol;
 import edu.egg.libreriaboot.entity.Usuario;
 import java.time.LocalDate;
 import java.util.Optional;
