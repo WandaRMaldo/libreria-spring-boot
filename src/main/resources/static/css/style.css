@@ -2,11 +2,16 @@
 body {
   /* Margin bottom by footer height */
   margin-bottom: 60px;
-
+ background-color: rgb(200, 227, 212);
 }
 
+/*.navbar {
+    background-color: rgb(135, 170, 170);
+}*/
+
 span {
-    color: rgba(255,255,255,.55);
+    color: rgba(0,0,0,.55);
+    /*color: rgba(255,255,255,.55);*/
 }
 
 .index-libro {
