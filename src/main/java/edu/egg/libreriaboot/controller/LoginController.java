@@ -5,12 +5,12 @@
  */
 package edu.egg.libreriaboot.controller;
 
-import edu.egg.libreriaboot.entity.Rol;
 import edu.egg.libreriaboot.excepcion.MiExcepcion;
 import edu.egg.libreriaboot.service.RolService;
 import edu.egg.libreriaboot.service.UsuarioService;
 import java.security.Principal;
 import java.util.Map;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -80,16 +80,18 @@ public class LoginController {
         try {
             usuarioService.crear(nombre, apellido, correo, clave);
             attributes.addFlashAttribute("exito", "SE HA REGISTRADO CON ÉXITO.");
-            //request.login(correo, clave);
-            redirectView.setUrl("/index");
+            request.login(correo, clave);
+            redirectView.setUrl("/");
 
-        } catch (Exception e) {
+        } catch (MiExcepcion e) {
             attributes.addFlashAttribute("error", e.getMessage());
             attributes.addFlashAttribute("nombre", nombre);
             attributes.addFlashAttribute("apellido", apellido);
             attributes.addFlashAttribute("correo", correo);
             attributes.addFlashAttribute("clave", clave);
             redirectView.setUrl("/signup");
+        } catch (ServletException e) {
+            attributes.addFlashAttribute("error", "Error al realizar auto-login");
         }
         return redirectView;
     }

@@ -81,6 +81,7 @@ public class UsuarioController {
             attributes.addFlashAttribute("exito", "El usuario ha sido creado exitosamente");
         } catch (MiExcepcion e) {
             attributes.addFlashAttribute("error", e.getMessage());
+            return new RedirectView("/usuarios/crear");
         }
         return new RedirectView("/usuarios");
     }

@@ -61,6 +61,7 @@ span {
 
 .table{
     font-size: small;
+    text-decoration: red;
 }
 
 .form-signin {
